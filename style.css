@@ -4,13 +4,15 @@
     box-sizing: border-box;
 }
 
-body{
-    height: 100vh;
+#main-container{
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
     gap: 30px;
+}
+body{
+    height: 100vh;
     background: linear-gradient(45deg,#d2001a,#7462ff,#f48e21,#23d5ab);
     animation: color 12s ease-in-out infinite;
     background-size: 300% 300%;
@@ -39,7 +41,7 @@ body{
     display: flex;
     justify-content: center;
     align-items: center;
-    /* border: 1px solid black; */
+    border: 2px solid black;
     font-size: 24px;
     transition: height 1s ease, width 1s ease, background-color 0.3s ease;
 

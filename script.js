@@ -1,54 +1,84 @@
 
 const container = document.querySelector('.container');
 const cells = document.querySelectorAll('.cell');
-document.addEventListener('DOMContentLoaded',()=>{
+let mainContainer = container.parentNode;
+let currentPlayer = 'X';
 
-    let currentPlayer  = 'X';
-console.log(cells);
-    cells.forEach(cell=>{
-        cell.addEventListener('mouseover',()=>{
-            cell.style.height='200px';
-            cell.style.width='200px';
-            cell.style.border='2px solid black';
-            // cell.style.backgroundColor = 'white';
-            
-        })
+document.addEventListener('DOMContentLoaded', () => {
+    cells.forEach(cell => {
+        cell.addEventListener('click', () => {
+            if (cell.textContent === '') {
+                cell.textContent = currentPlayer;
+                currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+            }
 
-        cell.addEventListener('mouseout',()=>{
-            cell.style.height='150px';
-            cell.style.width='150px';
-            cell.style.backgroundColor = 'transparent';
-            cell.style.border='0px solid black';
-
-            
-
-        })
-
-        cell.addEventListener('click',()=>{
-            if(cell.textContent===''){
-                cell.textContent=currentPlayer; 
-                currentPlayer =currentPlayer=== 'X'?'O':'X';        
-             }
-
-// First Occurrence: currentPlayer === 'X'
-// This part checks if the current value of currentPlayer is 'X'.
-// Second Occurrence: currentPlayer = ...
-// This part assigns a new value to currentPlayer based on the result of the condition.
+            // First Occurrence: currentPlayer === 'X'
+            // This part checks if the current value of currentPlayer is 'X'.
+            // Second Occurrence: currentPlayer = ...
+            // This part assigns a new value to currentPlayer based on the result of the condition.
         })
     })
 })
 
-if(cells[0].textContent && cells[1].textContent&&cells[2].textContent ==='X'){
+let winningCombinations = [
+    [0,1,2],
+    [3,4,5],
+    [6,7,8],
+    [0,3,6],
+    [1,4,7],
+    [2,5,8]
+];
 
-    let infoText = document.createElement('h1')
-    infoText.innerHTML = '<strong id="infoText">Player 1 has won the game!!!</strong>' 
+function checkWinner(cells) {
+    for (let i = 0; i < winningCombinations.length; i++) {
+        const [a, b, c] = winningCombinations[i];
+        
+        if (cells[a].textContent && 
+            cells[a].textContent === cells[b].textContent && 
+            cells[a].textContent === cells[c].textContent) {
+                
+            // We have a winner
+            let winner = cells[a].textContent;
+            console.log(`${winner} wins!`);
+            return winner;
+        }
+    }
+    return null; // No winner found
+}
 
-
+function displayWinner(winner){
+    let winningPlayer = document.createElement('h1');
+    if(winner === 'X'){
+        winningPlayer.innerHTML = '<strong id="infoText">Player X is the winner</strong>';
+    }else if(winner === 'O'){
+        winningPlayer.innerHTML = '<strong id="infoText">Player O is the winner</strong>';
+    }
+    mainContainer.insertBefore(winningPlayer,container);
 }
 
 
+cells.forEach(cell => {
+    cell.addEventListener('click', handleCellClick, { once: true });
+});
 
+function handleCellClick(event) {
+    const cell = event.target;
+    cell.textContent = currentPlayer;
+    movesCount++;
+    
+    let winner = checkWinner(cells);
+    
+    if (winner) {
+        displayWinner(winner);
+    } else if (movesCount === 9) {
+        displayWinner(null);
+    } else {
+        currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+    }
+}
 
-
+let movesCount = 0;
+let winner = checkWinner(cells);
+displayWinner(winner);
 
 
