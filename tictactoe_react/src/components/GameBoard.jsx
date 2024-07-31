@@ -1,24 +1,10 @@
-import {React,useState} from 'react'
+import {React} from 'react'
 
 
-const initialGameBoard = [
-    [null,null,null],
-    [null,null,null],
-    [null,null,null]
-]
-
-function GameBoard() {
-    const [gameBoard, setGameBoard ] = useState(initialGameBoard);
 
 
-    function handleSelectSquare(rowIndex,colIndex){
-        setGameBoard((previouseGameBoard)=>{
-            const updatedBoard =[...previouseGameBoard.map(innerArray=>[...innerArray])];
-            updatedBoard[rowIndex][colIndex]='X';
-            return updatedBoard;
-        })
-    }
-
+function GameBoard({onSelectSquare,board}) {
+  let gameBoard = board;
 
   return (
     <>
@@ -27,7 +13,7 @@ function GameBoard() {
         <li key={rowIndex}>
             <ol>
                 {row.map((playerSymbol,colIndex)=>(
-                    <li key={colIndex}><button onClick={()=>handleSelectSquare(rowIndex,colIndex)}>{playerSymbol}</button></li>
+                    <li key={colIndex}><button onClick={()=>onSelectSquare(rowIndex,colIndex)} disabled={playerSymbol !== null}>{playerSymbol}</button></li>
                 ))}
             </ol>
         </li>

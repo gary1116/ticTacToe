@@ -25,7 +25,7 @@ function Player(props) {
 
   return (
     <>
-      <li>
+      <li className={props.isActive===true ? 'active' : undefined}>
               <span className="player">
                 {editablePlayerName}
                 <span className='player-symbol'>{props.symbol}</span>
